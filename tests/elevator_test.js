@@ -8,23 +8,28 @@ const Person = require('../person').default
 
 describe('Elevator', function() {
   const elevator = new Elevator()
-  const alex = new Person("Alex", 2)
+  const jorge = new Person('Jorge', 4)
 
   afterEach(function() {
     elevator.reset();
   });
 
-  xit('should bring a rider to a floor above their current floor', () => {
-    // Alex requests the elevator to take him from 2 to 5
-    elevator.requestFloor(alex, 5)
-
-    // Assert the current floor of the elevator is the drop off floor
-    assert.equal(elevator.currentFloor, 5)
-    // Assert the current status of the elevator is idle after drop off
-    assert.equal(elevator.state, 'idle')
-    // Assert the total number of stops is 2 after drop off
+  it('should bring rider to their requested floor', () => {
+    elevator.addRequest(jorge, 9)
+    assert.equal(elevator.currentFloor, 9)
+    assert.equal(elevator.floors, 9)
     assert.equal(elevator.stops, 2)
-    // Assert the total number of floors traversed
+    assert.equal(elevator.status, 'stopped')
+    assert.equal(elevator.riders.length, 0)
+    assert.equal(elevator.requests.length, 1)
+  });
+
+
+  it('should bring a rider to a floor above their current floor', () => {
+    elevator.addRequest(jorge, 5)
+    assert.equal(elevator.currentFloor, 5)
+    assert.equal(elevator.status, 'stopped')
+    assert.equal(elevator.stops, 2)
     assert.equal(elevator.floors, 5)
   });
 
